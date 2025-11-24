@@ -1,0 +1,110 @@
+{% load static %}
+
+<style>
+  .custom-navbar {
+    background: linear-gradient(to right, 
+      black 10%, 
+      rgb(45, 45, 45) 30%, 
+      rgb(84, 84, 84) 50%, 
+      rgb(125, 125, 125) 70%, 
+      rgb(142, 142, 142) 90%, 
+      rgb(171, 170, 170) 100%);
+    padding: 10px 20px;
+  }
+
+  .custom-navbar .navbar-brand {
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .custom-navbar .navbar-brand img {
+    height: 50px;
+    margin-right: 10px;
+  }
+
+  .custom-navbar .nav-link {
+    color: white;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+  }
+
+  .custom-navbar .nav-link:hover {
+    color: #ffd700;
+  }
+
+  /* Mobile number & Login button */
+  .navbar-contact {
+    color: white;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+  }
+
+  .navbar-contact i {
+    margin-right: 5px;
+  }
+
+  .login-btn {
+    background-color: #ffd700;
+    color: black;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .login-btn:hover {
+    background-color: #ffcc00;
+    color: black;
+  }
+
+  /* Responsive: Stack contact & login on small screens */
+  @media (max-width: 991px) {
+    .navbar-contact,
+    .login-btn {
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-sm custom-navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}">
+      <img src="{% static 'logo_india.jpeg' %}" height="50">
+      <span>INDIAN TOURS</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'places' %}">Places</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+        </li>
+        <!-- Mobile number (visible on medium+ screens) -->
+        <li class="nav-item d-none d-md-flex align-items-center">
+          <div class="navbar-contact">
+            <i class="fas fa-phone"></i>
+            +91 79047 62362
+          </div>
+        </li>
+        <!-- Login button -->
+        <li class="nav-item">
+          <a class="btn login-btn" href="{% url 'login' %}">Login</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

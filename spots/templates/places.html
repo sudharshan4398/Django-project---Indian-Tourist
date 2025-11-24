@@ -1,0 +1,250 @@
+{% extends 'main/main.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        background-color: white;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .heading {
+        padding-top: 100px;
+        text-align: center;
+    }
+
+    .heading h1, .heading p {
+        color: black;
+        margin: 10px 0;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .division {
+        width: 45%;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin: 10px;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .division:hover {
+        transform: scale(1.03);
+    }
+
+    .division img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .content {
+        padding: 15px;
+    }
+
+    .content h3 {
+        font-size: 22px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .content p {
+        font-size: 16px;
+        color: #555;
+    }
+
+    ul {
+        text-align: left;
+        padding-left: 20px;
+    }
+</style>
+
+<div class="heading">
+    <h1>Indian Tour Spots: Images & Details</h1>
+    <p>Welcome To OOTY</p>
+    <h1>Spot One and Two</h1>
+</div>
+
+<div class="container">
+    <div class="division">
+        <img src="{% static 'pykara-lake_ooty.jpg' %}" alt="Pykara Lake">
+        <div class="content">
+            <h3>Pykara Lake</h3>
+            <p>Winding through the slopes of the Nilgiri Hills is the majestic river of Pykara...</p>
+            <p>Originating from the heights of Mukurthi Hills...</p>
+        </div>
+    </div>
+
+    <div class="division">
+        <img src="{% static 'rose_garden_ooty.jpg' %}" alt="Ooty Rose Garden">
+        <div class="content">
+            <h3>Rose Garden</h3>
+            <p>The best time to visit a rose garden is often in the spring...</p>
+            <p><strong>General Guidelines</strong><br>
+            <strong>Spring (March–June):</strong> Peak flowering season.<br>
+            <strong>Early Summer (June):</strong> Full bloom.<br>
+            <strong>Autumn (September–October):</strong> Good display in cooler climates.<br>
+            <strong>Ooty Specific:</strong> Best from March to June.</p>
+        </div>
+    </div>
+</div>
+
+<h1 style="color: black; text-align: center; margin: 30px 0;">Spot Three and Four</h1>
+
+<div class="container">
+    <div class="division">
+        <img src="{% static 'botanical_garden.jpg' %}" alt="Ooty Botanical Garden">
+        <div class="content">
+            <h3>Botanical Garden</h3>
+            <p>You will typically need 2 to 3 full hours...</p>
+            <p><strong>Factors influencing your visit time:</strong><br>
+            - <strong>Pacing:</strong> 2 hours for a relaxing walk.<br>
+            - <strong>Interest:</strong> More time needed for rare flora...</p>
+        </div>
+    </div>
+
+    <div class="division">
+        <img src="{% static 'elk_murugan_temple.jpg' %}" alt="Elk Hill Murugan Temple">
+        <div class="content">
+            <h3>Elk Hill Murugan Temple</h3>
+            <p>There is no single "most powerful" Murugan temple...</p>
+            <ul>
+                <li><strong>Palani Temple:</strong> Deity believed to be made by sage Agastya.</li>
+                <li><strong>Tiruchendur Temple:</strong> Seashore location...</li>
+                <li><strong>Saluvankuppam Temple:</strong> Oldest Murugan temple...</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="heading">
+    <h1>Welcome to Kochi</h1>
+</div>
+
+<div class="container">
+    <div class="division">
+        <img src="{% static 'pykara-lake_ooty.jpg' %}" alt="Pykara Lake (reused)">
+        <div class="content">
+            <h3>Pykara Lake</h3>
+            <p>Pykara Lake is a popular tourist destination...</p>
+            <p><strong>Activities & Facilities:</strong><br>
+            - Boating: Speed boats, pedal boats...<br>
+            - Near Pykara Falls<br>
+            - Canteen available<br>
+            - Nearby: Wenlock Downs...<br>
+            <strong>Timings:</strong> 8:30 AM–5:30 PM<br>
+            <strong>Entry Fee:</strong> ₹10 per person</p>
+        </div>
+    </div>
+
+    <div class="division">
+        <img src="{% static 'elk_murugan_temple.jpg' %}" alt="Elk Hill Murugan Temple (reused)">
+        <div class="content">
+            <h3>Elk Hill Murugan Temple</h3>
+            <p>The Elk Hill Murugan Temple is a prominent Hindu temple...</p>
+            <p><strong>Key Features:</strong><br>
+            - 40-foot golden Murugan statue<br>
+            - Idols of Ganesha, Shiva, and Shakthi<br>
+            - Peaceful, meditative atmosphere<br>
+            - Panoramic hilltop views<br>
+            - Major festival: Thaipusam (Jan/Feb)<br>
+            - 3–4 km from Ooty Railway Station</p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="division">
+        <img src="{% static 'lulu_mall_kochin.jpg' %}" alt="Lulu Mall Kochi">
+        <div class="content">
+            <h3>Lulu Mall</h3>
+            <p>Lulu Mall in Kochi is one of India’s largest malls...</p>
+            <p><strong>Shopping:</strong><br>
+            - Largest hypermarket in India<br>
+            - 300+ international & Indian brands</p>
+            <p><strong>Entertainment:</strong><br>
+            - 9-screen PVR Gold Class cinema<br>
+            - South India’s largest ice skating rink<br>
+            - Trampoline park, gaming arena, bowling alley<br>
+            - 2,500-seater food court</p>
+        </div>
+    </div>
+
+    <div class="division">
+        <img src="{% static 'Alleppey_boat_img.jpg' %}" alt="Alleppey Backwaters">
+        <div class="content">
+            <h3>Alleppey (Alappuzha)</h3>
+            <p>Known as the "Venice of the East," Alappuzha...</p>
+            <p><strong>Key Attractions:</strong><br>
+            - Houseboat cruises through backwaters<br>
+            - Alappuzha Beach & 150-year-old lighthouse<br>
+            - Traditional coir-making demonstrations<br>
+            - Annual boat races during festivals</p>
+            <p><strong>From Kochi to Alappuzha:</strong><br>
+            - Train: 50 mins from Ernakulam Junction<br>
+            - Bus: 1.5–2 hours</p>
+        </div>
+    </div>
+</div>
+
+<div class="heading">
+    <h1>Welcome to Pondicherry</h1>
+</div>
+
+<div class="container">
+    <div class="division">
+        <img src="{% static 'pondy_french_calony.jpeg' %}" alt="French Quarter, Pondicherry">
+        <div class="content">
+            <h3>French Quarter (White Town)</h3>
+            <p>The French Quarter in Puducherry is renowned...</p>
+        </div>
+    </div>
+
+    <div class="division">
+        <img src="{% static 'pondy_rock_beach.jpg' %}" alt="Rock Beach, Pondicherry">
+        <div class="content">
+            <h3>Rock Beach (Promenade Beach)</h3>
+            <p>Rock Beach, also known as Promenade Beach...</p>
+            <p><strong>Location:</strong> White Town, near French Quarter</p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="division">
+        <img src="{% static 'pondy_museum.webp' %}" alt="Puducherry Museum">
+        <div class="content">
+            <h3>Puducherry Museum</h3>
+            <p>The museum showcases Pondicherry’s rich history...</p>
+            <p><strong>Visiting Hours:</strong> 9 AM–6 PM (Closed Mondays & national holidays)<br>
+            <strong>Entry Fee:</strong> ₹10 (Indians)<br>
+            <strong>Photography:</strong> Prohibited inside; allowed in sculpture garden<br>
+            <strong>Highlights:</strong> Roman pottery, beads, Chinese Tsung artifacts, colonial relics</p>
+        </div>
+    </div>
+
+    <div class="division">
+        <img src="{% static 'pondy_light_house.webp' %}" alt="Pondicherry Lighthouse">
+        <div class="content">
+            <h3>New Lighthouse</h3>
+            <p>Pondicherry has two lighthouses...</p>
+            <p><strong>Features:</strong><br>
+            - Panoramic views of city & Bay of Bengal<br>
+            - 250-step climb (footwear must be removed)<br>
+            - <strong>Currently reported as temporarily closed</strong> — verify before visiting</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

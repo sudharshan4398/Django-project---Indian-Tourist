@@ -1,0 +1,185 @@
+{% extends 'main/main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  body {
+    background-color: whitesmoke;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .booking-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    margin-left: 30%;
+    text-align: center;
+    max-width: 800px;
+  }
+
+  .trip-type,
+  .class-type {
+    margin: 15px 0;
+    color: #2e7d32;
+  }
+
+  .trip-type label,
+  .class-type label {
+    margin-right: 20px;
+    font-weight: bold;
+  }
+
+  .row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .field label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .field input {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 220px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .icon {
+    margin-left: 8px;
+    font-size: 18px;
+  }
+
+  .guests-section {
+    margin: 20px 0;
+  }
+
+  .guests-section label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .guests-row {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .guests-row select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .submit-btn {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  .submit-btn:hover {
+    background-color: #1b5e20;
+  }
+</style>
+
+<div class="booking-container">
+  <div class="trip-type">
+    <label><input type="radio" name="trip_type" value="round" checked /> ROUND-TRIP</label>
+    <label><input type="radio" name="trip_type" value="one_way" /> ONE-WAY</label>
+    <label><input type="radio" name="trip_type" value="multi" /> MULTI-CITY</label>
+  </div>
+
+  <form class="booking-form" method="POST" action="{% url 'booking:search_flights' %}">
+    {% csrf_token %}
+    
+    <div class="row">
+      <div class="field">
+        <label>From</label>
+        <input type="text" name="origin" placeholder="From city, airport, or IATA code" required />
+        <span class="icon">✈️</span>
+      </div>
+      
+      <div class="field">
+        <label>To</label>
+        <input type="text" name="destination" placeholder="To city, airport, or IATA code" required />
+        <span class="icon">✈️</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Departure date</label>
+        <input type="date" name="departure_date" required />
+        <span class="icon">📅</span>
+      </div>
+      
+      <div class="field">
+        <label>Return date</label>
+        <input type="date" name="return_date" />
+        <span class="icon">📅</span>
+      </div>
+    </div>
+
+    <div class="guests-section">
+      <label>Passengers</label>
+      <div class="guests-row">
+        <select name="adults">
+          <option value="1">1 Adult (12+)</option>
+          <option value="2">2 Adults</option>
+          <option value="3">3 Adults</option>
+          <option value="4">4 Adults</option>
+          <option value="5">5 Adults</option>
+        </select>
+        
+        <select name="children">
+          <option value="0">0 Children (2–12)</option>
+          <option value="1">1 Child</option>
+          <option value="2">2 Children</option>
+          <option value="3">3 Children</option>
+        </select>
+        
+        <select name="infants">
+          <option value="0">0 Infants (<2)</option>
+          <option value="1">1 Infant</option>
+          <option value="2">2 Infants</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="class-type">
+      <label><input type="radio" name="flight_class" value="economy" checked /> ECONOMY</label>
+      <label><input type="radio" name="flight_class" value="business" /> BUSINESS</label>
+    </div>
+    
+    <button type="submit" class="submit-btn">Search Flights</button>
+  </form>
+</div>
+{% endblock content %}

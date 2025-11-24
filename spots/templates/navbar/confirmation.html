@@ -1,0 +1,14 @@
+<!-- confirmation.html -->
+ {% extends 'main/main.html' %}
+ {% load static %}
+
+{% block content %}
+<div style="text-align:center; padding: 40px; color: green;">
+  <h2>✅ Booking Confirmed!</h2>
+  <p>Flight: {{ booking.from_location }} → {{ booking.to_location }}</p>
+  <p>Date: {{ booking.checkin_date }}</p>
+  <p>Passengers: {{ booking.adults }} Adults</p>
+  <p>Seat(s): {{ seats }}</p>
+  <p><strong>Ticket ID: XYZ789</strong></p>
+</div>
+{% endblock content %}

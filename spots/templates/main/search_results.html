@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   {% extends 'main/main.html' %}
+   {% load static %}
+   {% block content %}
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>Flight Seat Booking</title>
+   <style>
+        /* Navbar fixed at top */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+
+        /* Body styling */
+        body {
+            margin: 0;
+            padding-top: 70px; /* space for navbar */
+            background-image: url("{% static 'aeroplane_2.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Booking container */
+        .booking-container {
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 12px;
+            padding: 25px;
+            max-width: 700px;
+            width: 90%;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.35);
+            text-align: center;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .flight-info {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .seat-map {
+            display: inline-grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+
+        .seat {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .seat.available {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .seat.available:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .seat.booked {
+            background-color: #dc3545;
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .seat.selected {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        #confirmation-message {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            min-height: 24px;
+        }
+
+        .confirm-btn, .payment-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+
+        .confirm-btn:disabled, .payment-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .payment-section {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .amount-info {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 15px 0;
+        }
+   </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        ✈️ Flight Seat Booking
+    </div>
+
+    <!-- Booking Container -->
+    <div class="booking-container" style="width: 25%; height: 25%;">
+        <h2>Select Your Seat</h2>
+        
+        <div class="flight-info">
+            <p><strong>Indigo Flight AA101</strong> — Coimbatore → Chennai | 12 September 2025 | Economy</p>
+        </div>
+
+        <div class="seat-map" id="seatMap"></div>
+
+        <button class="confirm-btn" id="confirmBtn" onclick="showPaymentOptions()" disabled>
+            Confirm Booking
+        </button>
+
+        <div class="payment-section" id="paymentSection">
+            <div class="amount-info" id="amountInfo"></div>
+            <p>Choose payment method:</p>
+            <button class="payment-btn" onclick="processPayment('cash')">Pay with Cash</button>
+            <button class="payment-btn" onclick="processPayment('gpay')">Pay with G Pay</button>
+        </div>
+
+        <div id="confirmation-message"></div>
+    </div>
+
+<script>
+    const preBookedSeats = ['A2', 'B3'];
+    const seatPrice = 2500; // ₹2,500 per seat
+
+    let selectedSeat = null;
+
+    function generateSeatMap() {
+        const rows = ['A', 'B'];
+        const cols = [1, 2, 3, 4];
+        const seatMap = document.getElementById('seatMap');
+
+        rows.forEach(row => {
+            cols.forEach(col => {
+                const seatId = row + col;
+                const seatBtn = document.createElement('button');
+                seatBtn.classList.add('seat');
+                seatBtn.textContent = seatId;
+
+                if (preBookedSeats.includes(seatId)) {
+                    seatBtn.classList.add('booked');
+                    seatBtn.disabled = true;
+                } else {
+                    seatBtn.classList.add('available');
+                    seatBtn.addEventListener('click', () => toggleSeatSelection(seatBtn));
+                }
+
+                seatMap.appendChild(seatBtn);
+            });
+        });
+    }
+
+    function toggleSeatSelection(seatElement) {
+        if (selectedSeat) {
+            selectedSeat.classList.remove('selected');
+        }
+
+        if (seatElement.classList.contains('available')) {
+            seatElement.classList.add('selected');
+            selectedSeat = seatElement;
+            document.getElementById('confirmBtn').disabled = false;
+        }
+    }
+
+    function showPaymentOptions() {
+        if (!selectedSeat) return;
+        document.getElementById('amountInfo').textContent = `Seat Price: ₹${seatPrice}`;
+        document.getElementById('paymentSection').style.display = 'block';
+    }
+
+    function processPayment(method) {
+        const confirmationDiv = document.getElementById('confirmation-message');
+        
+        // Step 1: Show "Amount credited"
+        confirmationDiv.textContent = "✅ Amount credited. Processing booking...";
+        confirmationDiv.style.color = '#198754';
+
+        // Step 2: After delay, finalize booking
+        setTimeout(() => {
+            selectedSeat.classList.remove('available', 'selected');
+            selectedSeat.classList.add('booked');
+            selectedSeat.disabled = true;
+
+            const seatId = selectedSeat.textContent;
+            const paymentMethod = method === 'gpay' ? 'G Pay' : 'Cash';
+            confirmationDiv.textContent = `✅ Seat ${seatId} booked successfully! Paid via ${paymentMethod}.`;
+            confirmationDiv.style.color = '#2e7d32';
+
+            // Step 3: Show "Start your journey!" after another short delay
+            setTimeout(() => {
+                confirmationDiv.textContent = "🌟 Start your journey!";
+                confirmationDiv.style.color = '#0d6efd';
+            }, 1500);
+
+            document.getElementById('confirmBtn').disabled = true;
+            document.getElementById('paymentSection').style.display = 'none';
+            selectedSeat = null;
+        }, 1000);
+    }
+
+    generateSeatMap();
+</script>
+
+</body>
+</html>
+{% endblock content %}
