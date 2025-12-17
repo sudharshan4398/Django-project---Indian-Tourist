@@ -1,6 +1,9 @@
 # spots/models.py
 from django.db import models
-from django.contrib.auth.models import User  # optional: if you use login
+from django.contrib.auth.models import User
+import secrets
+from decimal import Decimal
+
 
 # -----------------------------
 # Flight & Seat Models
@@ -16,15 +19,17 @@ class Flight(models.Model):
     arrival_time = models.TimeField()
     economy_price = models.DecimalField(max_digits=10, decimal_places=2)
     business_price = models.DecimalField(max_digits=10, decimal_places=2)
-    total_seats = models.PositiveIntegerField(default=180)
+    # Removed total_seats – actual capacity is defined by Seat instances
 
     def __str__(self):
         return f"{self.flight_number} - {self.departure_city} to {self.arrival_city}"
+
 
 class Seat(models.Model):
     SEAT_CLASSES = [
         ('economy', 'Economy'),
         ('business', 'Business'),
+        # 'first' removed to align with FlightSearch options
     ]
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='seats')
     seat_number = models.CharField(max_length=5)  # e.g., 12A
@@ -36,6 +41,7 @@ class Seat(models.Model):
 
     def __str__(self):
         return f"{self.flight.flight_number} - {self.seat_number} ({self.seat_class})"
+
 
 # -----------------------------
 # Passenger & Booking Models
@@ -49,6 +55,7 @@ class Passenger(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+
 class Booking(models.Model):
     BOOKING_STATUS = [
         ('pending', 'Pending'),
@@ -61,20 +68,39 @@ class Booking(models.Model):
     passengers = models.ManyToManyField(Passenger)
     selected_seats = models.ManyToManyField(Seat)
     booking_date = models.DateTimeField(auto_now_add=True)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     status = models.CharField(max_length=10, choices=BOOKING_STATUS, default='confirmed')
 
     def save(self, *args, **kwargs):
         if not self.booking_id:
-            import time
-            self.booking_id = f"B{int(time.time())}"  # simple unique ID
+            # Generate a short, URL-safe, unique booking ID
+            self.booking_id = f"B{secrets.token_urlsafe(8)[:11].upper().replace('-', '').replace('_', '')}"
+        
+        # Optional: Auto-calculate total_price (customize logic as needed)
+        if not self.pk:  # Only on creation
+            self.total_price = self.calculate_total_price()
+        
         super().save(*args, **kwargs)
+
+    def calculate_total_price(self):
+        """
+        Calculate total price based on selected seats and flight pricing.
+        Customize this logic based on your business rules.
+        """
+        price = Decimal('0.00')
+        for seat in self.selected_seats.all():
+            if seat.seat_class == 'economy':
+                price += self.flight.economy_price
+            elif seat.seat_class == 'business':
+                price += self.flight.business_price
+        return price
 
     def __str__(self):
         return f"Booking {self.booking_id} - {self.flight.flight_number}"
 
+
 # -----------------------------
-# Flight Search Model
+# Flight Search Model (for analytics or re-searches)
 # -----------------------------
 class FlightSearch(models.Model):
     TRIP_CHOICES = [
@@ -85,6 +111,7 @@ class FlightSearch(models.Model):
     CLASS_CHOICES = [
         ('economy', 'Economy'),
         ('business', 'Business'),
+        # First class intentionally excluded to match Seat options
     ]
 
     trip_type = models.CharField(max_length=20, choices=TRIP_CHOICES)

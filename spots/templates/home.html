@@ -8,9 +8,31 @@
         <p style="color: darkmagenta; text-align: center;">Adventure Awaits</p>
     </div>
 
-    <div>
-        <img src="{% static 'mountain_pick.webp' %}" alt="image" style="width: 2000px; height: 700px;">
+    <!-- Bootstrap Carousel -->
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <!-- First image -->
+    <div class="carousel-item active">
+      <img src="{% static 'couples_1.jpg' %}" class="d-block w-100" alt="Mountain" style="height: 700px;">
     </div>
+    <!-- Second image -->
+    <div class="carousel-item">
+      <img src="{% static 'beach.jpg' %}" class="d-block w-100" alt="Forest" style="height: 700px;">
+    </div>
+    <!-- Third image -->
+    <div class="carousel-item">
+      <img src="{% static 'couples_2.jpg' %}" class="d-block w-100" alt="Lake" style="height: 700px;">
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
 
     <div>
         <div class="heading">
